@@ -132,7 +132,7 @@ func icinga(w http.ResponseWriter, r *http.Request) {
 func main() {
 	flag.Parse()
 	log := log.New(os.Stdout, "- ", log.LstdFlags)
-	http.Handle("/", http.FileServer(assetFS()))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(assetFS())))
 
 	http.HandleFunc("/icinga", icinga)
 	log.Fatal(http.ListenAndServe(":8080", nil))
