@@ -10,9 +10,57 @@
 	</head>
 	<body>
 		<div class="row">
+			<div class="col-md-3">
+				<div class="card card-inverse card-danger text-xs-center">
+					<div class="card-block">
+						<blockquote class="card-blockquote">
+							Critical
+							<h1 class="card-title">{{ .CriticalCount }}</h1>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-inverse card-warning text-xs-center">
+					<div class="card-block">
+						<blockquote class="card-blockquote">
+							Warning
+							<h1 class="card-title">{{ .WarningCount }}</h1>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-inverse card-primary text-xs-center">
+					<div class="card-block">
+						<blockquote class="card-blockquote">
+							Unknown
+							<h1 class="card-title">{{ .UnknownCount }}</h1>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-inverse card-info text-xs-center">
+					<div class="card-block">
+						<blockquote class="card-blockquote">
+							Acknowledged
+							<h1 class="card-title">{{ .AcknowledgedCount }}</h1>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
 			<div class="col-sm-6">
 				<p class="h1">
-					{{ len .Data }} service problems
+					{{ $problems := len .ServiceProblems }}
+					{{ if eq $problems 1 }}
+						{{ $problems }} service problem
+					{{ else }}
+						{{ $problems }} service problems
+					{{ end }}
 				</p>
 			</div>
 			<div class="col-sm-6">
@@ -39,7 +87,7 @@
 					</tr>
 			</thead>
 			<tbody>
-				{{ range $index, $value := .Data }}
+				{{ range $index, $value := .ServiceProblems }}
 					{{ if eq .ServiceState 0 }}
 						<tr class="table-success">
 					{{ end }}

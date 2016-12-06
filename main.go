@@ -54,7 +54,11 @@ func (s ServiceProblem) HumanDuration() string {
 }
 
 type Out struct {
-	Data []ServiceProblem
+	ServiceProblems   []ServiceProblem
+	AcknowledgedCount int
+	CriticalCount     int
+	WarningCount      int
+	UnknownCount      int
 }
 
 func (o Out) CurrentTime() string {
@@ -85,10 +89,28 @@ func icinga(w http.ResponseWriter, r *http.Request) {
 		req.Header.Add(*customHeaderName, *customHeaderValue)
 	}
 
-	var out Out
-
-	if err := getJson(req, &out.Data); err != nil {
+	problems := []ServiceProblem{}
+	if err := getJson(req, &problems); err != nil {
 		log.Fatalf("Unable to execute http request: %s\n", err)
+	}
+
+	var out Out
+	for _, p := range problems {
+		if p.ServiceAcknowledged == 1 {
+			out.AcknowledgedCount += 1
+			continue
+		}
+		if p.ServiceState == 1 {
+			out.WarningCount += 1
+		}
+		if p.ServiceState == 2 {
+			out.CriticalCount += 1
+		}
+		if p.ServiceState == 3 {
+			out.UnknownCount += 1
+		}
+		out.ServiceProblems = append(out.ServiceProblems, p)
+
 	}
 
 	data, err := Asset("templates/icinga.html")
