@@ -11,7 +11,11 @@
 	<body>
 		<div class="row">
 			<div class="col-md-3">
+				{{ if eq .CriticalCount 0 }}
+				<div class="card card-outline-danger text-xs-center">
+				{{ else }}
 				<div class="card card-inverse card-danger text-xs-center">
+				{{ end }}
 					<div class="card-block">
 						<blockquote class="card-blockquote">
 							Critical
@@ -21,7 +25,11 @@
 				</div>
 			</div>
 			<div class="col-md-3">
+				{{ if eq .WarningCount 0 }}
+				<div class="card card-outline-warning text-xs-center">
+				{{ else }}
 				<div class="card card-inverse card-warning text-xs-center">
+				{{ end }}
 					<div class="card-block">
 						<blockquote class="card-blockquote">
 							Warning
@@ -31,7 +39,11 @@
 				</div>
 			</div>
 			<div class="col-md-3">
+				{{ if eq .UnknownCount 0 }}
+				<div class="card card-outline-primary text-xs-center">
+				{{ else }}
 				<div class="card card-inverse card-primary text-xs-center">
+				{{ end }}
 					<div class="card-block">
 						<blockquote class="card-blockquote">
 							Unknown
@@ -41,7 +53,11 @@
 				</div>
 			</div>
 			<div class="col-md-3">
+				{{ if eq .AcknowledgedCount 0 }}
+				<div class="card card-outline-info text-xs-center">
+				{{ else }}
 				<div class="card card-inverse card-info text-xs-center">
+				{{ end }}
 					<div class="card-block">
 						<blockquote class="card-blockquote">
 							Acknowledged
