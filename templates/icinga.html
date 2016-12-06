@@ -1,0 +1,73 @@
+{{define "icinga"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta http-equiv="refresh" content="15">
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+	</head>
+	<body>
+		<div class="row">
+			<div class="col-sm-6">
+				<p class="h1">
+					{{ len .Data }} service problems
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<p class="h1 text-md-right">
+					{{ .CurrentTime }}
+				</p>
+			</div>
+		</div>
+		<table class="table table-sm">
+			<thead class="thead-inverse">
+					<tr>
+						<th>
+							Duration
+						</th>
+						<th>
+							Host
+						</th>
+						<th>
+							Service
+						</th>
+						<th>
+							Output
+						</th>
+					</tr>
+			</thead>
+			<tbody>
+				{{ range $index, $value := .Data }}
+					{{ if eq .ServiceState 0 }}
+						<tr class="table-success">
+					{{ end }}
+					{{ if eq .ServiceState 1 }}
+						<tr class="table-warning">
+					{{ end }}
+					{{ if eq .ServiceState 2 }}
+						<tr class="table-danger">
+					{{ end }}
+					{{ if eq .ServiceState 3 }}
+						<tr class="table-info">
+					{{ end }}
+						<td>
+							{{ .HumanDuration }}
+						</td>
+						<td>
+							{{ .HostDisplayName }}
+						</td>
+						<td>
+							{{ .ServiceDescription }}
+						</td>
+						<td>
+							{{ .ServiceOutput }}
+						</td>
+					</tr>
+				{{ end }}
+			</tbody>
+		</table>
+	</body>
+</html>
+{{end}}
