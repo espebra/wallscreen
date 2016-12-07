@@ -59,11 +59,15 @@ type Out struct {
 	CriticalCount     int
 	WarningCount      int
 	UnknownCount      int
+	TZ                string
 }
 
 func (o Out) CurrentTime() string {
 	now := time.Now()
-	return now.Format("15:04:05")
+	if location, err := time.LoadLocation(o.TZ); err == nil {
+		now = time.Now().In(location)
+	}
+	return now.Format("15:04:05 MST")
 }
 
 func getJson(req *http.Request, target interface{}) error {
@@ -112,6 +116,8 @@ func icinga(w http.ResponseWriter, r *http.Request) {
 		out.ServiceProblems = append(out.ServiceProblems, p)
 
 	}
+
+	out.TZ = r.FormValue("tz")
 
 	data, err := Asset("templates/icinga.html")
 	if err != nil {
