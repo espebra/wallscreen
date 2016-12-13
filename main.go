@@ -5,6 +5,7 @@ import (
 	"flag"
 	"github.com/dustin/go-humanize"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -78,7 +79,15 @@ func getJson(req *http.Request, target interface{}) error {
 	}
 	log.Printf("Icinga status: %d\n", resp.StatusCode)
 	defer resp.Body.Close()
-	return json.NewDecoder(resp.Body).Decode(target)
+	err = json.NewDecoder(resp.Body).Decode(target)
+	if err != nil {
+		log.Printf("Error occurred: %s\n", err.Error())
+		body, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			log.Printf("Body:\n%s\n", body)
+		}
+	}
+	return err
 }
 
 func icinga(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +104,9 @@ func icinga(w http.ResponseWriter, r *http.Request) {
 
 	problems := []ServiceProblem{}
 	if err := getJson(req, &problems); err != nil {
-		log.Fatalf("Unable to execute http request: %s\n", err)
+		log.Printf("Unable to execute http request: %s\n", err)
+		http.Error(w, "Unable to fetch from upstream: "+err.Error(), 500)
+		return
 	}
 
 	var out Out
