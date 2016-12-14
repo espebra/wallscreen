@@ -91,7 +91,7 @@ func getJson(req *http.Request, target interface{}) error {
 }
 
 func icinga(w http.ResponseWriter, r *http.Request) {
-	url := *baseURLFlag + "/monitoring/list/services?service_problem=1&sort=service_severity&dir=desc"
+	url := *baseURLFlag + "/monitoring/list/services?service_problem=1&sort=service_state&dir=desc"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatalf("Unable to create http request: %s\n", err)
