@@ -135,6 +135,8 @@ func icinga(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Asset not found: %s\n", err)
 	}
 
+	w.Header().Set("cache-control", "max-age=1")
+
 	t := template.New("icinga")
 	t, err = t.Parse(string(data))
 	if err != nil {
