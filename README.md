@@ -4,7 +4,8 @@ Quick and dirty hack to get an icingaweb2 wallscreen
 ## Installation
 
 ```
-go get github.com/espebra/wallscreen
+go get -u -d github.com/espebra/wallscreen
+cd $GOPATH/src/github.com/espebra/wallscreen
 make deps
 make build
 ```
