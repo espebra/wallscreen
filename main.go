@@ -153,6 +153,6 @@ func main() {
 	log := log.New(os.Stdout, "- ", log.LstdFlags)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(assetFS())))
 
-	http.HandleFunc("/icinga", icinga)
+	http.HandleFunc("/", icinga)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
